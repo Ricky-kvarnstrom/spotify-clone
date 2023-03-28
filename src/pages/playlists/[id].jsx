@@ -24,18 +24,49 @@ export default function Playlist() {
 
   return (
     <Layout>
-      <div className="p-10">
-        <div className="flex gap-3">
+      <div className="">
+        <div className="from-primary-500 flex items-end gap-3 bg-gradient-to-b from-primary/60 to-bg-dimmed p-10">
           <img
-            src={playlist.images[0].url}
+            src={playlist.images[0]?.url}
             alt="playlist image"
-            className="h-40 w-40 flex-shrink-0"
+            className="h-60 w-60 flex-shrink-0"
           />
           <div>
             <p className="font-semibold text-text-dimmed">Playlist</p>
-            <h2 className="font semibold text-3xl">{playlist.name}</h2>
+            <h2 className="text-6xl font-black">{playlist.name}</h2>
           </div>
         </div>
+      </div>
+      <div className="p-10">
+        <table className="w-full ">
+          <tbody>
+            {playlist.tracks.items.map((item, index) => (
+              <tr
+                key={item.id}
+                className="h-16 whitespace-nowrap text-sm text-text-dimmed hover:bg-text-dimmed/10"
+              >
+                <td className="pl-4 text-base">{index + 1} </td>
+                <td>
+                  <div className="flex gap-4  ">
+                    <img
+                      src={item.track.album.images[0].url}
+                      className="h-12 w-12"
+                      alt=""
+                    />
+                    <div className="">
+                      <h4 className="text-ellipsis text-text">
+                        {item.track.name}
+                      </h4>
+                      <p>{item.track.artists[0].name}</p>
+                    </div>
+                  </div>
+                </td>
+                <td>{item.track.album.name}</td>
+                <td className="pr-4">{item.track.duration_ms}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </Layout>
   );
