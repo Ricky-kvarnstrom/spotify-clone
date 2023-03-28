@@ -1,4 +1,5 @@
 import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import { Home } from "react-feather";
 import { spotifyApi } from "@/pages/_app";
 import { useQuery } from "@tanstack/react-query";
@@ -9,7 +10,7 @@ export default function Sidebar() {
     isLoading,
     isError,
   } = useQuery({
-    querykey: ["playlists"],
+    queryKey: ["playlists"],
     queryFn: async () => (await spotifyApi.getUserPlaylists()).body.items,
   });
 
@@ -19,20 +20,21 @@ export default function Sidebar() {
         .fill(null)
         .map(() => (
           <div
-            className="mb-1.5 h-6  animate-pulse rounded-full bg-neutral-700"
-            style={{ width: Math.floor(Math.random() * 40 + 40) + "%" }}
+            className="mb-1 h-6 w-9/12 animate-pulse rounded-md  bg-neutral-800"
+            style={{
+              width: Math.floor(Math.random() * 40 + 40) + "%",
+            }}
           ></div>
         ));
 
     if (isError) return "error...";
-
-    return playlists.map((playlists) => (
+    return playlists.map((playlist) => (
       <Link
-        href={"/playlists/" + playlists.id}
-        className="block py-1  text-text-dimmed transition-colors hover:text-text"
-        key={playlists.id}
+        href={"/playlists/" + playlist.id}
+        className="block py-1 text-text-dimmed transition-colors hover:text-text"
+        key={playlist.id}
       >
-        {playlists.name}
+        {playlist.name}
       </Link>
     ));
   }
@@ -41,7 +43,7 @@ export default function Sidebar() {
     <aside className="w-full max-w-xs overflow-y-scroll bg-bg p-6">
       <Link
         href="/"
-        className="flex w-max items-center gap-4 text-text-dimmed transition-colors hover:text-text"
+        className="transition-color flex w-max items-center gap-4 text-text-dimmed hover:text-text"
       >
         <Home className="h-6 w-6" />
         <p className="font-semibold">Home</p>
