@@ -16,11 +16,11 @@ export default function Sidebar() {
 
   function renderPlaylists() {
     if (isLoading)
-      return Array(10)
+      return Array(20)
         .fill(null)
         .map(() => (
           <div
-            className="mb-1 h-6 w-9/12 animate-pulse rounded-md  bg-neutral-800"
+            className="mb-1.5 h-6 animate-pulse rounded-full bg-neutral-700"
             style={{
               width: Math.floor(Math.random() * 40 + 40) + "%",
             }}
@@ -28,6 +28,7 @@ export default function Sidebar() {
         ));
 
     if (isError) return "error...";
+
     return playlists.map((playlist) => (
       <Link
         href={"/playlists/" + playlist.id}
@@ -40,13 +41,13 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-full max-w-xs overflow-y-scroll bg-bg p-6">
+    <aside className="w-full max-w-xs overflow-y-auto bg-bg p-6 max-md:hidden">
       <Link
         href="/"
-        className="transition-color flex w-max items-center gap-4 text-text-dimmed hover:text-text"
+        className="flex w-max items-center gap-4 text-text-dimmed transition-colors hover:text-text"
       >
         <Home className="h-6 w-6" />
-        <p className="font-semibold">Home</p>
+        <p className="font-semibold"> Home</p>
       </Link>
       <hr className="my-3 border-text-dimmed/50" />
       <div className="">{renderPlaylists()}</div>

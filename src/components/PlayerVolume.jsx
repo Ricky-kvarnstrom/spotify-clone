@@ -4,9 +4,10 @@ import { Volume1, Volume2, VolumeX } from "react-feather";
 export default function PlayerVolume({ player }) {
   const [volume, setVolume] = useState(0.5);
   return (
-    <div className="flex items-center gap-4">
-      {volume === 0 ? <VolumeX /> : volume < 0.5 ? <Volume1 /> : <Volume2 />}
-      <div className="group relative w-40">
+    <div className="flex items-center gap-2">
+      {volume > 0.5 ? <Volume2 /> : volume > 0 ? <Volume1 /> : <VolumeX />}
+
+      <div className="group relative w-36">
         <label
           htmlFor=""
           className="relative block h-1 rounded-sm bg-text-dimmed/30"

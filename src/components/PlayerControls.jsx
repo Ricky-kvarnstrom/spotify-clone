@@ -9,7 +9,7 @@ export default function PlayerControls({ player, isPaused, position, track }) {
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isPaused && player) {
-        setCurrentProgress(parseFloat(currentProgress) + 100);
+        setCurrentProgress(parseFloat(currentProgress) + 1000);
       }
     }, 1000);
 
@@ -25,13 +25,16 @@ export default function PlayerControls({ player, isPaused, position, track }) {
       <div className="flex items-center justify-center gap-4">
         <SkipBack
           className="h-5 w-5 fill-white"
-          onClick={() => player.previousTrack()}
+          onClick={() => {
+            player.previousTrack();
+          }}
         />
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-text">
           {isPaused ? (
             <Play
               className="ml-1 h-5 w-5 fill-black text-black"
               onClick={() => {
+                console.log(player);
                 player.togglePlay();
               }}
             />
@@ -46,7 +49,9 @@ export default function PlayerControls({ player, isPaused, position, track }) {
         </div>
         <SkipForward
           className="h-5 w-5 fill-white"
-          onClick={() => player.nextTrack()}
+          onClick={() => {
+            player.nextTrack();
+          }}
         />
       </div>
       <div className="mt-4 flex items-center justify-center gap-2 text-sm text-text-dimmed">
@@ -54,7 +59,7 @@ export default function PlayerControls({ player, isPaused, position, track }) {
         <div className="group relative w-80">
           <label
             htmlFor=""
-            className="relative block h-1  rounded-sm bg-text-dimmed/30"
+            className="relative block h-1 rounded-sm bg-text-dimmed/30"
           >
             <div className="h-full overflow-hidden rounded-sm">
               <div
@@ -67,7 +72,7 @@ export default function PlayerControls({ player, isPaused, position, track }) {
               ></div>
             </div>
             <div
-              className="absolute hidden h-3 w-3 rounded-full bg-text group-hover:block"
+              className="absolute  hidden h-3 w-3 rounded-full bg-text group-hover:block"
               style={{
                 left: `${(100 * currentProgress) / duration}%`,
                 top: "50%",
@@ -80,15 +85,15 @@ export default function PlayerControls({ player, isPaused, position, track }) {
             min={0}
             max={duration}
             value={currentProgress}
+            onChange={(e) => setCurrentProgress(e.target.value)}
             onMouseUp={() => {
               console.log("mouse up");
               player.seek(currentProgress);
             }}
-            onChange={(e) => setCurrentProgress(e.target.value)}
             className="absolute inset-0 opacity-0"
           />
         </div>
-        <p> {formatTime(duration)} </p>
+        <p>{formatTime(duration)}</p>
       </div>
     </div>
   );
