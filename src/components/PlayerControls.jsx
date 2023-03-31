@@ -31,7 +31,7 @@ export default function PlayerControls({ player, isPaused, position, track }) {
             if (isPaused) {
               spotifyApi.play();
             } else {
-              spotifyApi.play();
+              spotifyApi.pause();
             }
           }}
         >
