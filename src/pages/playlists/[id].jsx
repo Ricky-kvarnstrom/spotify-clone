@@ -19,8 +19,6 @@ export default function Playlist() {
     queryFn: async () => (await spotifyApi.getPlaylist(router.query.id)).body,
   });
 
-  console.log(playlist);
-
   if (isLoading) return <Layout>loading...</Layout>;
 
   if (isError) return <Layout>error...</Layout>;
@@ -54,6 +52,14 @@ export default function Playlist() {
             <div
               key={item.id}
               className="group grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-md py-1.5 px-6 text-sm hover:bg-text-dimmed/10  md:grid-cols-[auto_1fr_1fr_auto]"
+              onClick={async () => {
+                await spotifyApi.play({
+                  context_uri: `spotify:playlist:${router.query.id}`,
+                  offset: {
+                    position: index,
+                  },
+                });
+              }}
             >
               <div className=" w-8 text-base">
                 <p className="truncate group-hover:hidden">{index + 1}</p>
@@ -61,7 +67,7 @@ export default function Playlist() {
               </div>
               <div className="flex items-center  gap-4 overflow-hidden">
                 <img
-                  src={item.track.album.images[0].url}
+                  src={item.track.album.images[0]?.url}
                   alt=""
                   className="h-12 w-12"
                 />
