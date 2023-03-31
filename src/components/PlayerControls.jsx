@@ -5,6 +5,7 @@ import { spotifyApi } from "@/pages/_app";
 export default function PlayerControls({ player, isPaused, position, track }) {
   const [currentProgress, setCurrentProgress] = useState(position);
   const duration = track.duration_ms;
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (!isPaused && player) {
@@ -13,9 +14,11 @@ export default function PlayerControls({ player, isPaused, position, track }) {
     }, 1000);
     return () => clearInterval(interval);
   }, [isPaused, player]);
+
   useEffect(() => {
     setCurrentProgress(position);
   }, [position]);
+
   return (
     <div>
       <div className="flex items-center justify-center gap-4">

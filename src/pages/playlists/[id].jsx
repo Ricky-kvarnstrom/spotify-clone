@@ -22,11 +22,11 @@ export default function Playlist() {
 
   // const isLoading = true;
 
-  if (isError || true)
+  if (isError)
     return (
       <Layout>
         <h2 className="px-4 py-16 text-3xl font-bold md:text-5xl">
-          oopps, could not get that playlist
+          oops, could not get that playlist
         </h2>
         <div className="flex justify-center">
           <Link href="/" className="rounded-full bg-primary py-4 px-6">
