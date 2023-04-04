@@ -1,8 +1,8 @@
+import { useEffect, useState } from "react";
 import { spotifyApi } from "@/pages/_app";
-import React, { useEffect, useState } from "react";
 import PlayerControls from "./PlayerControls";
-import PlayerOverlay from "./PlayerOverlay";
 import PlayerVolume from "./PlayerVolume";
+import PlayerOverlay from "./PlayerOverlay";
 
 export default function Player() {
   const [device, setDevice] = useState(null);
@@ -12,6 +12,8 @@ export default function Player() {
   const [position, setPosition] = useState(null);
   const [playerOverlayIsOpen, setPlayerOverlayIsOpen] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const [shuffle, setShuffle] = useState(false);
+  const [repeat, setRepeat] = useState(0);
 
   useEffect(() => {
     const token = sessionStorage.getItem("spotify-key");
@@ -29,12 +31,8 @@ export default function Player() {
         volume: 0.5,
       });
 
-      console.log("player:", player);
-
       player.addListener("ready", ({ device_id }) => {
-        console.log("Ready with device_id", device_id);
         setDevice(device_id);
-        setLocalPlayer(player);
       });
 
       player.addListener("player_state_changed", (state) => {
@@ -42,12 +40,13 @@ export default function Player() {
           return;
         }
 
-        console.log("state changed", state);
         setTrack(state.track_window.current_track);
-        setIsPaused(state.Paused);
+        setIsPaused(state.paused);
         setPosition(state.position);
+        setShuffle(state.shuffle);
+        setRepeat(state.repeat_mode);
 
-        player.getCurrentState().then((state) => {
+        player?.getCurrentState().then((state) => {
           if (!state) {
             setIsActive(false);
           } else {
@@ -55,6 +54,7 @@ export default function Player() {
           }
         });
       });
+
       setLocalPlayer(player);
       player.connect();
     };
@@ -62,7 +62,6 @@ export default function Player() {
 
   useEffect(() => {
     if (!localPlayer) return;
-
     localPlayer.connect();
 
     return () => {
@@ -92,9 +91,10 @@ export default function Player() {
           setPlayerOverlayIsOpen(!playerOverlayIsOpen);
         }}
       >
-        <div className="flex flex-1 items-center ">
+        <div className="flex flex-1 items-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={track.album.images[0].url}
+            src={track.album.images[0]?.url}
             alt=""
             className="mr-4 h-14 w-14 flex-shrink-0"
           />
@@ -109,9 +109,11 @@ export default function Player() {
             isPaused={isPaused}
             position={position}
             track={track}
+            shuffle={shuffle}
+            repeat={repeat}
           />
         </div>
-        <div className="flex flex-1 justify-end">
+        <div className="flex flex-1 justify-end max-md:hidden">
           <PlayerVolume player={localPlayer} />
         </div>
       </div>
@@ -122,6 +124,8 @@ export default function Player() {
         player={localPlayer}
         isPaused={isPaused}
         position={position}
+        shuffle={shuffle}
+        repeat={repeat}
       />
     </div>
   );

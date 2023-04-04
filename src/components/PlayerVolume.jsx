@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Volume1, Volume2, VolumeX } from "react-feather";
 import { spotifyApi } from "@/pages/_app";
-
 export default function PlayerVolume({ player }) {
   const [volume, setVolume] = useState(0.5);
   return (
@@ -31,7 +30,6 @@ export default function PlayerVolume({ player }) {
           }}
         />
       )}
-
       <div className="group relative w-36">
         <label
           htmlFor=""
